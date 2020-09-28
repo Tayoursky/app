@@ -60,7 +60,6 @@ class Db
         $stmt = $this->pdo->prepare($sql);
         try {
             $stmt->execute($params);
-
         } catch (PDOException $e) {
             echo $e->getMessage();
         }

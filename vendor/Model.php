@@ -5,7 +5,6 @@ class Model
 {
     protected $pdo;
     protected $table;
-    protected $pk = 'id';
 
     public function __construct()
     {
@@ -23,32 +22,29 @@ class Model
         return $this->pdo->count($sql);
     }
 
-    public function findAll($limit)
+    public function findAllLimit($start, $onPage)
     {
-        $sql = "SELECT * FROM {$this->table} {$limit}";
+        $str = "SELECT * FROM %s LIMIT %d, %d;";
+        $sql = sprintf($str, $this->table, $start, $onPage);
         return $this->pdo->query($sql);
     }
 
-    public function findOne(int $id, $field = '')
+    public function findOne($id)
     {
-        $field = $field ?: $this->pk;
-        $sql = "SELECT * FROM {$this->table} WHERE {$field} = ? LIMIT 1;";
+        $sql = "SELECT * FROM {$this->table} WHERE id = ? LIMIT 1;";
         return $this->pdo->query($sql, [$id]);
-    }
-
-    public function findBySql($sql, $params = [])
-    {
-        return $this->pdo->query($sql, $params);
     }
 
     public function create($name, $email, $textarea, $status)
     {
         $sql = "INSERT INTO {$this->table} (name, email, text, status) VALUES (?, ?, ?, ?)";
-        return $this->pdo->insert($sql, [$name, $email, $textarea, $status]);
+        $this->pdo->insert($sql, [$name, $email, $textarea, $status]);
     }
 
-    public function update(int $id)
+    public function update($name, $email, $textarea, $status, $id)
     {
+        $sql = "UPDATE {$this->table} SET name = :name, email = :email, text = :textarea, status = :status WHERE id = :id;";
+        $this->pdo->insert($sql, ['name' => $name, 'email' => $email, 'textarea' => $textarea, 'status' => $status, 'id' => $id]);
 
     }
 

@@ -9,11 +9,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Имя</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">Id</th>
+                    <th scope="col"><a href="index?key=name">Имя</a></th>
+                    <th scope="col"><a href="index?key=email">Email</a></th>
                     <th scope="col">Текст</th>
-                    <th scope="col">Статус</th>
+                    <th scope="col"><a href="index?key=status">Статус</a></th>
+                    <th scope="col">Действие</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +26,8 @@
                     <td><?= $task['name']?></td>
                     <td><?= $task['email']?></td>
                     <td><?= $task['text']?></td>
-                    <td><?= $task['status']?></td>
+                    <td><?= $task['status'] ? 'Выполнено' : 'Новая'; ?></td>
+                    <td><a href="update?task=<?=$task['id']?>">Редактировать</a></td>
                 </tr>
         <?php endforeach; ?>
             </tbody>

@@ -17,8 +17,8 @@ class TaskController extends Controller
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $pagination = new Pagination($page, $onPage = 2, $total);
         $start = $pagination->getStart();
-        $limit = "LIMIT $start,$onPage";
-        $tasks = $model->findAll($limit);
+
+        $tasks = $model->findAllLimit($start, $onPage);
 
         $this->set(compact('title','tasks', 'pagination', 'total'));
     }
@@ -29,9 +29,25 @@ class TaskController extends Controller
         $model = new Task();
         if (isset($_POST) && !empty($_POST)) {
             $model->create($_POST['name'], $_POST['email'], $_POST['textarea'], (isset($_POST['status'])) ?: 0);
+            header("Location: index");
         }
-
         $this->set(compact('title'));
     }
+
+    public function updateAction()
+    {
+        $taskId = isset($_GET['task']) ? (int)$_GET['task'] : null;
+        $title = 'Update task';
+        $model = new Task();
+        $form = $model->findOne($taskId);
+
+        if (isset($_POST) && !empty($_POST)) {
+            $model->update($_POST['name'], $_POST['email'], $_POST['textarea'], (isset($_POST['status'])) ?: 0, $_POST['id']);
+            header("Location: index");
+        }
+        $this->set(compact('title', 'form'));
+    }
+
+
 
 }
