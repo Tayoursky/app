@@ -56,6 +56,7 @@ class Db
 
     public function insert($sql, $params = [])
     {
+
         $stmt = $this->pdo->prepare($sql);
         try {
             $stmt->execute($params);

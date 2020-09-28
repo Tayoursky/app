@@ -28,9 +28,8 @@ class TaskController extends Controller
         $title = 'Create task';
         $model = new Task();
         if (isset($_POST) && !empty($_POST)) {
-            $model->create($_POST['name'], $_POST['email'], $_POST['textarea'], $_POST['status']);
+            $model->create($_POST['name'], $_POST['email'], $_POST['textarea'], (isset($_POST['status'])) ?: 0);
         }
-
 
         $this->set(compact('title'));
     }

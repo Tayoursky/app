@@ -41,10 +41,10 @@ class Model
         return $this->pdo->query($sql, $params);
     }
 
-    public function create($name, $email, $text, $status = 0)
+    public function create($name, $email, $textarea, $status)
     {
-        $sql = "INSERT INTO {$this->table} (name, email, text, status) VALUES ('{$name}', '{$email}', '{$text}', {$status})";
-        return $this->pdo->insert($sql);
+        $sql = "INSERT INTO {$this->table} (name, email, text, status) VALUES (?, ?, ?, ?)";
+        return $this->pdo->insert($sql, [$name, $email, $textarea, $status]);
     }
 
     public function update(int $id)
