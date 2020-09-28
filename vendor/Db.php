@@ -1,6 +1,8 @@
 <?php
 namespace vendor;
 
+use PDOException;
+
 class Db
 {
     protected $pdo;
@@ -24,10 +26,10 @@ class Db
         return self::$instance;
     }
 
-    public function execute($sql)
+    public function execute($sql, $params = [])
     {
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute();
+        return $stmt->execute($params);
     }
 
     public function query($sql, $params = [])
@@ -38,6 +40,29 @@ class Db
             return $stmt->fetchAll();
         }
         return [];
+    }
+
+    public function count($sql)
+    {
+        $stmt = $this->pdo->prepare($sql);
+        try {
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        return $stmt->rowCount();
+    }
+
+    public function insert($sql, $params = [])
+    {
+        $stmt = $this->pdo->prepare($sql);
+        try {
+            $stmt->execute($params);
+
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
     }
 
 }

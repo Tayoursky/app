@@ -13,14 +13,12 @@ class TaskController extends Controller
         $title = 'Task Manager';
         $model = new Task();
 
-        $total = 6;
+        $total = $model->countRow();
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $onPage = 1;
-        $pagination = new Pagination($page, $onPage, $total);
+        $pagination = new Pagination($page, $onPage = 2, $total);
         $start = $pagination->getStart();
-        $tasks = $model->findAll(" id> 0 LIMIT $start, $onPage");
-        //$res = $model->query("SELECT * FROM task;");
-        //var_dump($task);
+        $limit = "LIMIT $start,$onPage";
+        $tasks = $model->findAll($limit);
 
         $this->set(compact('title','tasks', 'pagination', 'total'));
     }
@@ -28,6 +26,13 @@ class TaskController extends Controller
     public function createAction()
     {
         $title = 'Create task';
+        $model = new Task();
+        if (isset($_POST) && !empty($_POST)) {
+            $model->create($_POST['name'], $_POST['email'], $_POST['textarea'], $_POST['status']);
+        }
 
+
+        $this->set(compact('title'));
     }
+
 }

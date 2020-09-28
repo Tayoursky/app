@@ -60,7 +60,7 @@ Class Router
             }
         } else {
             http_response_code(404);
-            include '../views/site/error.php';
+            include '../views/error.php';
         }
     }
 

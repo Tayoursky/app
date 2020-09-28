@@ -5,6 +5,7 @@ class Model
 {
     protected $pdo;
     protected $table;
+    protected $pk = 'id';
 
     public function __construct()
     {
@@ -16,15 +17,22 @@ class Model
         return $this->pdo->execute($sql);
     }
 
-    public function findAll($params)
+    public function countRow()
     {
-        $sql = "SELECT * FROM {$this->table} WHERE {$params}";
+        $sql = "SELECT * FROM {$this->table}";
+        return $this->pdo->count($sql);
+    }
+
+    public function findAll($limit)
+    {
+        $sql = "SELECT * FROM {$this->table} {$limit}";
         return $this->pdo->query($sql);
     }
 
-    public function findOne(int $id)
+    public function findOne(int $id, $field = '')
     {
-        $sql = "SELECT * FROM {$this->table} WHERE id=? LIMIT 1;";
+        $field = $field ?: $this->pk;
+        $sql = "SELECT * FROM {$this->table} WHERE {$field} = ? LIMIT 1;";
         return $this->pdo->query($sql, [$id]);
     }
 
@@ -32,5 +40,17 @@ class Model
     {
         return $this->pdo->query($sql, $params);
     }
+
+    public function create($name, $email, $text, $status = 0)
+    {
+        $sql = "INSERT INTO {$this->table} (name, email, text, status) VALUES ('{$name}', '{$email}', '{$text}', {$status})";
+        return $this->pdo->insert($sql);
+    }
+
+    public function update(int $id)
+    {
+
+    }
+
 
 }
