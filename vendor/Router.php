@@ -47,11 +47,12 @@ Class Router
             $controller = 'controllers\\' . self::upperCamelCase(self::$route['controller']) . 'Controller';
             if (class_exists($controller)) {
                 $obj = new $controller(self::$route);
-                $action = self::lowerCamelCase(self::$route['action'] . 'Action');
+                $action = self::lowerCamelCase(self::$route['action']) . 'Action';
 
                 if (method_exists($obj, $action)) {
                     $obj->$action();
-                    $obj->getView();
+                    $var = $obj->getView();
+
                 } else {
                     echo "Метод <b>$controller::$action</b> не найден!";
                 }

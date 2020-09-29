@@ -11,16 +11,20 @@ class TaskController extends Controller
     public function indexAction()
     {
         $title = 'Task Manager';
+
         $model = new Task();
 
         $total = $model->countRow();
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $sort = isset($_GET['sort']) ? (string)$_GET['sort'] : 'id';
+        $desc = isset($_GET['desc']) ? (int)$_GET['desc'] : 0;
+        (($desc > 0) ? $orderBy = 'DESC' : $orderBy = 'ASC');
         $pagination = new Pagination($page, $onPage = 2, $total);
         $start = $pagination->getStart();
 
-        $tasks = $model->findAllLimit($start, $onPage);
+        $tasks = $model->findAllLimit($sort, $orderBy, $start, $onPage);
 
-        $this->set(compact('title','tasks', 'pagination', 'total'));
+        $this->set(compact('title','tasks', 'pagination', 'total', 'desc', 'sort'));
     }
 
     public function createAction()

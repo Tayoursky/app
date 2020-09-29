@@ -19,6 +19,7 @@ class View
     {
 
         $file_view = ROOT . "/views/{$this->route['controller']}/{$this->view}.php";
+        var_dump($file_view);
 
         if (is_array($vars)) extract($vars);
 

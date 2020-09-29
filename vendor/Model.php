@@ -22,10 +22,10 @@ class Model
         return $this->pdo->count($sql);
     }
 
-    public function findAllLimit($start, $onPage)
+    public function findAllLimit($sort, $desc, $start, $onPage)
     {
-        $str = "SELECT * FROM %s LIMIT %d, %d;";
-        $sql = sprintf($str, $this->table, $start, $onPage);
+        $str = "SELECT * FROM %s ORDER BY %s %s LIMIT %d, %d ;";
+        $sql = sprintf($str, $this->table, $sort, $desc, $start, $onPage);
         return $this->pdo->query($sql);
     }
 

@@ -35,6 +35,7 @@ class Db
     public function query($sql, $params = [])
     {
         $stmt = $this->pdo->prepare($sql);
+        //var_dump($stmt);exit;
         $res = $stmt->execute($params);
         if ($res !== false) {
             return $stmt->fetchAll();
