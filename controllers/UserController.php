@@ -1,40 +1,29 @@
 <?php
 namespace controllers;
 
+use models\User;
 use vendor\Controller;
 
 class UserController extends Controller
 {
+
+
+
     public function loginAction()
     {
-        /*if (!this->isGuest()) {
-            return $this->goHome();
-        }*/
+        $title = 'Login';
+        $user = new User();
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if (isset($_POST['login']) && isset($_POST['password'])) {
+            $user->auth($_POST['login'], $_POST['password']);
         }
 
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
 
-    private function isGuest()
-    {
+        if (isset($_GET["is_exit"]) && $_GET["is_exit"] == 1) {
+            $user->logout();
+            header("Location: ?is_exit=0");
+        }
 
-    }
-
-    /**
-     * Logout action.
-     *
-     */
-    public function logoutAction()
-    {
-        $this->logout();
-
-        return $this->goHome();
+        $this->set(compact('user', 'title'));
     }
 }

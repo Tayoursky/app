@@ -14,7 +14,11 @@
             <a class="nav-link" href="/task/index">Главная</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Вход</a>
+            <?php if (isset($_SESSION["is_auth"]) && $_SESSION["is_auth"]) {
+                echo "<a class='nav-link' href='/user/login?is_exit=1'>Выйти (" . $_SESSION["login"] . ")</a>";
+            } else {
+                echo "<a class='nav-link' href='/user/login'>Вход</a>";
+            }?>
         </li>
     </ul>
 </div>
