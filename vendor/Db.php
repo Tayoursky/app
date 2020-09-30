@@ -26,16 +26,9 @@ class Db
         return self::$instance;
     }
 
-    public function execute($sql, $params = [])
-    {
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute($params);
-    }
-
     public function query($sql, $params = [])
     {
         $stmt = $this->pdo->prepare($sql);
-        //var_dump($stmt);exit;
         $res = $stmt->execute($params);
         if ($res !== false) {
             return $stmt->fetchAll();
@@ -61,6 +54,7 @@ class Db
         $stmt = $this->pdo->prepare($sql);
         try {
             $stmt->execute($params);
+            return true;
         } catch (PDOException $e) {
             echo $e->getMessage();
         }

@@ -12,13 +12,13 @@ class User extends Model
     public function isAuth()
     {
         if (isset($_SESSION["is_auth"]))
-            return $_SESSION["is_auth"];
+            return boolval($_SESSION["is_auth"]);
         return false;
     }
 
-    public function auth($login, $passwors)
+    public function auth($login, $password)
     {
-        if ($login == $this->_login && $passwors == $this->_password) {
+        if ($login == $this->_login && $password == $this->_password) {
             $_SESSION["is_auth"] = true;
             $_SESSION["login"] = $login;
             return true;
@@ -31,7 +31,7 @@ class User extends Model
     public function getLogin()
     {
         if ($this->isAuth())
-            return $_SESSION["login"];
+            return (string)($_SESSION["login"]);
         return false;
     }
 

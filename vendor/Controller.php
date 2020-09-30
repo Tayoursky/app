@@ -25,4 +25,23 @@ abstract class Controller
         $this->vars = $vars;
     }
 
+    public function clean($value = "")
+    {
+        $value = trim($value);
+        $value = stripslashes($value);
+        $value = strip_tags($value);
+        $value = htmlspecialchars($value);
+
+        return $value;
+    }
+
+    public function setMessage($key, $message)
+    {
+        $_SESSION[$key] = $message;
+    }
+
+    public function getMessage($key)
+    {
+        return $_SESSION[$key];
+    }
 }

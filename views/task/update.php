@@ -24,7 +24,7 @@
                    <?php if ($form[0]['status'] > 0) : ?>
                    checked
                    <?php endif; ?>
-                   value="<?= $form[0]['status'] ?>">
+                   value="1">
             <label class="form-check-label" for="exampleCheck1">Выполнено</label>
         </div>
         <button type="submit" class="btn btn-primary">Редактировать</button>

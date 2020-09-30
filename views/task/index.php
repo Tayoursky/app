@@ -9,6 +9,14 @@ $arrow_down = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-ar
 ?>
 <div class="container">
     <h3>Менеджер задач</h3>
+    <?php
+        if (isset($_SESSION["success"]))
+            echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>" . $_SESSION["success"]
+                . "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+
+        unset($_SESSION["success"]);
+    ?>
+
     <p class="text-right">
         <a href="/task/create" class="btn btn-primary">Добавить задачу</a>
     </p>
@@ -35,7 +43,9 @@ $arrow_down = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-ar
                             Статус<?= (($desc == 0 && $sort == 'status') ? $arrow_up : $arrow_down) ?>
                         </a>
                     </th>
-                    <th scope="col">Действие</th>
+                    <?php if (isset($_SESSION['is_auth']) && $_SESSION['is_auth']) :?>
+                        <th scope="col">Действие</th>
+                    <?php endif;?>
                 </tr>
             </thead>
             <tbody>
@@ -48,13 +58,15 @@ $arrow_down = '<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-ar
                     <td><?= $task['email']?></td>
                     <td><?= $task['text']?></td>
                     <td><?= $task['status'] ? 'Выполнено' : 'Новая'; ?></td>
+                    <?php if (isset($_SESSION['is_auth']) && $_SESSION['is_auth']) :?>
                     <td><a href="update?task=<?=$task['id']?>">Редактировать</a></td>
+                    <?php endif;?>
                 </tr>
         <?php endforeach; ?>
             </tbody>
         </table>
         <div class="text-center">
-            <p>Задачи: <?=count($tasks)?> из <?= $total?></p>
+            <p>Задачи: <?= count($tasks) ?> из <?= $total?></p>
             <?php if ($pagination->countPages > 1) :?>
                 <?= $pagination ?>
             <?php endif;?>

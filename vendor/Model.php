@@ -11,9 +11,14 @@ class Model
         $this->pdo = Db::instance();
     }
 
-    public function query($sql)
+    private function query($sql, $params)
     {
-        return $this->pdo->execute($sql);
+        return $this->pdo->query($sql, $params);
+    }
+
+    private function insert($sql, $params)
+    {
+        return $this->pdo->insert($sql, $params);
     }
 
     public function countRow()
@@ -26,25 +31,25 @@ class Model
     {
         $str = "SELECT * FROM %s ORDER BY %s %s LIMIT %d, %d ;";
         $sql = sprintf($str, $this->table, $sort, $desc, $start, $onPage);
-        return $this->pdo->query($sql);
+        return $this->query($sql, $params =[]);
     }
 
     public function findOne($id)
     {
         $sql = "SELECT * FROM {$this->table} WHERE id = ? LIMIT 1;";
-        return $this->pdo->query($sql, [$id]);
+        return $this->query($sql, [$id]);
     }
 
-    public function create($name, $email, $textarea, $status)
+    public function create($name, $email, $text, $status)
     {
         $sql = "INSERT INTO {$this->table} (name, email, text, status) VALUES (?, ?, ?, ?)";
-        $this->pdo->insert($sql, [$name, $email, $textarea, $status]);
+        return $this->insert($sql, [$name, $email, $text, $status]);
     }
 
-    public function update($name, $email, $textarea, $status, $id)
+    public function update($name, $email, $text, $status, $id)
     {
         $sql = "UPDATE {$this->table} SET name = :name, email = :email, text = :textarea, status = :status WHERE id = :id;";
-        $this->pdo->insert($sql, ['name' => $name, 'email' => $email, 'textarea' => $textarea, 'status' => $status, 'id' => $id]);
+        return $this->insert($sql, ['name' => $name, 'email' => $email, 'textarea' => $text, 'status' => $status, 'id' => $id]);
 
     }
 

@@ -18,10 +18,12 @@
                 <textarea class="form-control" id="textarea" rows="3"  name="textarea" required></textarea>
             </div>
         </div>
-        <div class="form-check col-md-4 mb-3">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="status" value="1">
-            <label class="form-check-label" for="exampleCheck1">Выполнено</label>
-        </div>
+        <?php if (isset($_SESSION['is_auth']) && $_SESSION['is_auth']) :?>
+            <div class="form-check col-md-4 mb-3">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="status" value="1">
+                <label class="form-check-label" for="exampleCheck1">Выполнено</label>
+            </div>
+        <?php endif;?>
         <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
 </div>

@@ -6,8 +6,8 @@
         if ($user->isAuth()) {
             echo "Здравствуйте, " . $user->getLogin() ;
         } else {
-            if (isset($_POST["login"]))
-            echo "<div class='alert alert-danger' role='alert'>Не верный логин или пароль!</div>";
+            if (isset($_SESSION['is_auth']) && !$_SESSION['is_auth'])
+                echo "<div class='alert alert-danger' role='alert'>Не верный логин или пароль!</div>";
         ?>
 
             <div class="row">
