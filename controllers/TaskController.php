@@ -64,8 +64,6 @@ class TaskController extends Controller
 
         if ($text != $_SESSION['textarea']) {
             $text .=  "(Отредактировано администратором)";
-        } else {
-            $text = preg_replace("#\((Отредактировано администратором)\)#", "", $text);
         }
 
         unset($_SESSION['textarea']);
