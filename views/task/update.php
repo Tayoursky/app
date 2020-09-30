@@ -20,11 +20,7 @@
             </div>
         </div>
         <div class="form-check col-md-4 mb-3">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="status"
-                   <?php if ($form[0]['status'] > 0) : ?>
-                   checked
-                   <?php endif; ?>
-                   value="1">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="status" value="1" <?= $form[0]['status'] ? 'checked' : ''?>>
             <label class="form-check-label" for="exampleCheck1">Выполнено</label>
         </div>
         <button type="submit" class="btn btn-primary">Редактировать</button>
