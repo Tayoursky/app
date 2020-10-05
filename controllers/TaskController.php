@@ -21,7 +21,7 @@ class TaskController extends Controller
         $desc = isset($_GET['desc']) ? intval($_GET['desc']) : 0;
         (($desc > 0) ? $orderBy = 'DESC' : $orderBy = 'ASC');
 
-        $pagination = new Pagination($page, $onPage = 2, $total);
+        $pagination = new Pagination($page, $onPage = 3, $total);
         $start = $pagination->getStart();
 
         $tasks = $model->findTasks($sort, $orderBy, $start, $onPage);
@@ -56,23 +56,33 @@ class TaskController extends Controller
         if ($form) {
             $_SESSION['textarea'] = $form[0]['text'];
         }
-        $status = (isset($_POST['status']) ? 1 : 0);
-        $id = isset($_POST['id']) ? intval($_POST['id']) : $form[0]['id'];
-        $name = isset($_POST['name']) ? $this->clean($_POST['name']) : $form[0]['name'];
-        $email = isset($_POST['email']) ? $this->clean($_POST['email']) : $form[0]['email'];
-        $text = isset($_POST['textarea']) ? $this->clean($_POST['textarea']) : $form[0]['text'];
 
-        if ($text != $_SESSION['textarea']) {
-            $text .=  "(Отредактировано администратором)";
-        }
 
-        unset($_SESSION['textarea']);
+        if (isset($_POST) && !empty($_POST)) {
+            $id = intval($_POST['id']);
+            $name = $this->clean($_POST['name']);
+            $email = $this->clean($_POST['email']);
+            $status = (isset($_POST['status']) ? intval($_POST['status']) : 0);
 
-        if (!empty($_POST)) {
-            if ($task = $model->updateTask($name, $email, $text, $status, $id)) {
-                $_SESSION['success'] = 'Задача успешно обновлена.';
-                header("Location: index");
+
+
+            if (isset($_POST['textarea']) && ($_SESSION['textarea'] != $_POST['textarea'])){
+                $text = $this->clean($_POST['textarea']);
+                $text .= " (Отредактировано администратором).";
+                unset($_SESSION['textarea']);
+            } else {
+                preg_replace("#^\(Отредактировано администратором\)\.$#", "", $_POST['textarea']);
+                $text = $this->clean($_POST['textarea']);
+
             }
+
+
+
+
+            if ($task = $model->updateTask($name, $email, $text, $status, $id))
+                $_SESSION['success'] = 'Задача успешно обновлена.';
+
+            header("Location: index");
         }
         $this->set(compact('title', 'form'));
     }
