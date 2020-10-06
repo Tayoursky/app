@@ -52,6 +52,7 @@ class TaskController extends Controller
         $taskId = isset($_GET['task']) ? (int)$_GET['task'] : null;
         $title = 'Update task';
         $model = new Task();
+        $user = new User();
         $form = $model->findOne($taskId);
         if ($form) {
             $_SESSION['textarea'] = $form[0]['text'];
@@ -65,25 +66,25 @@ class TaskController extends Controller
             $status = (isset($_POST['status']) ? intval($_POST['status']) : 0);
 
 
-
-            if (isset($_POST['textarea']) && ($_SESSION['textarea'] != $_POST['textarea'])){
+            if (isset($_POST['textarea']) && ($_SESSION['textarea'] != $_POST['textarea'])) {
                 $text = $this->clean($_POST['textarea']);
                 $text .= " (Отредактировано администратором).";
-                unset($_SESSION['textarea']);
             } else {
                 preg_replace("#^\(Отредактировано администратором\)\.$#", "", $_POST['textarea']);
                 $text = $this->clean($_POST['textarea']);
 
             }
 
-
-
-
-            if ($task = $model->updateTask($name, $email, $text, $status, $id))
+            if ($user->isAuth()) {
+                $model->updateTask($name, $email, $text, $status, $id);
                 $_SESSION['success'] = 'Задача успешно обновлена.';
-
-            header("Location: index");
+                header("Location: index");
+            } else {
+                header("Location: /user/login");
+                unset($_SESSION['textarea']);
+            }
         }
+
         $this->set(compact('title', 'form'));
     }
 
